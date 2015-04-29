@@ -43,6 +43,7 @@
                         <button colspan="2" name="%(account_payment.action_create_payment_order)s"
                                 string="Select Invoices to Collect" type="action" 
                                 attrs="{'invisible':['|',('state','!=','draft'),('payment_order_type', '!=', 'debit')]}"
+                                context="{'all_fiscalyear': True}"
                                 icon="gtk-find"
                                 />
                     </xpath>
