@@ -3,7 +3,7 @@
 ##############################################################################
 #
 #    OpenERP, Open Source Management Solution
-#    Copyright (C) 2015 Therp BV <http://therp.nl>.
+#    Copyright (C) 2014-2015 Therp BV <http://therp.nl>.
 #
 #    This program is free software: you can redistribute it and/or modify
 #    it under the terms of the GNU Affero General Public License as
@@ -46,20 +46,6 @@ class RaboMT940Parser(MT940):
         """
         data = ''.join([x for x in data if x in printable])
         return super(RaboMT940Parser, self).parse(cr, data)
-
-    def handle_tag_60F(self, data):
-        """get start balance and currency"""
-        # For the moment only first 60F record
-        # The alternative would be to split the file and start a new
-        # statement for each 20: tag encountered.
-        stmt = self.current_statement
-        if not stmt.local_currency:
-            stmt.local_currency = data[7:10]
-            stmt.date = datetime.strptime(data[1:7], '%y%m%d')
-            stmt.start_balance = str2amount(data[0], data[10:])
-            stmt.id = '%s-%s' % (
-                self.current_statement.date.strftime('%Y-%m-%d'),
-                self.current_statement.id)
 
     def handle_tag_61(self, data):
         """Handle tag 61: transaction data."""
